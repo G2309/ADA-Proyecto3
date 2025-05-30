@@ -132,3 +132,53 @@ function process_sequence_imtf(initial_config::Vector{Int}, sequence::Vector{Int
     return total_cost, imtf_list.elements
 end
 
+# Prints para responder las preguntas que nos pusieron en el documento 
+
+println("ALGORITMO MOVE TO FRONT (MTF) - ANÁLISIS")
+println("=" ^ 80)
+
+println("\n1. SECUENCIA: [0,1,2,3,4,0,1,2,3,4,0,1,2,3,4,0,1,2,3,4]")
+config1 = [0, 1, 2, 3, 4]
+sequence1 = [0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4]
+cost1, _ = process_sequence(config1, sequence1)
+
+println("\n2. SECUENCIA: [4,3,2,1,0,1,2,3,4,3,2,1,0,1,2,3,4]")
+sequence2 = [4, 3, 2, 1, 0, 1, 2, 3, 4, 3, 2, 1, 0, 1, 2, 3, 4]
+cost2, _ = process_sequence(config1, sequence2)
+
+println("\n3. MEJOR CASO (20 solicitudes):")
+best_seq, best_cost = find_best_case_sequence(config1, 20)
+println("Secuencia óptima: ", best_seq)
+println("Costo mínimo: ", best_cost)
+
+println("\n4. PEOR CASO (20 solicitudes):")
+worst_seq, worst_cost = find_worst_case_sequence(config1, 20)
+println("Secuencia del peor caso: ", worst_seq)
+println("Costo máximo: ", worst_cost)
+
+println("\n5. SECUENCIAS REPETITIVAS:")
+sequence_2s = fill(2, 20)
+println("Secuencia de 20 '2's:")
+cost_2s, _ = process_sequence(config1, sequence_2s)
+
+sequence_3s = fill(3, 20)
+println("\nSecuencia de 20 '3's:")
+cost_3s, _ = process_sequence(config1, sequence_3s, verbose=false)
+println("Costo total para 20 '3's: ", cost_3s)
+
+println("\nPATRÓN OBSERVADO:")
+println("Para cualquier secuencia de 20 elementos iguales:")
+println("- Primer acceso: costo = posición inicial del elemento")
+println("- Siguientes 19 accesos: costo = 1 cada uno")
+println("- Costo total = posición_inicial + 19")
+
+println("\n6. ALGORITMO IMTF vs MTF:")
+println("\nIMTF para el MEJOR CASO de MTF:")
+cost_imtf_best, _ = process_sequence_imtf(config1, best_seq)
+
+println("\nIMTF para el PEOR CASO de MTF:")
+cost_imtf_worst, _ = process_sequence_imtf(config1, worst_seq)
+
+println("\nCOMPARACIÓN DE RESULTADOS:")
+println("Mejor caso MTF: ", best_cost, " vs IMTF: ", cost_imtf_best)
+println("Peor caso MTF: ", worst_cost, " vs IMTF: ", cost_imtf_worst)
