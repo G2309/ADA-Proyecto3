@@ -12,6 +12,14 @@ mutable struct MTFList
     end
 end
 
+mutable struct IMTFList
+    elements::Vector{Int}
+    
+    function IMTFList(initial_config::Vector{Int})
+        new(copy(initial_config))
+    end
+end
+
 function mtf_access(mtf_list::MTFList, element::Int)
     position = findfirst(x -> x == element, mtf_list.elements)
     
@@ -67,14 +75,6 @@ function find_worst_case_sequence(config::Vector{Int}, length::Int=20)
     worst_sequence = fill(config[end], length)
     cost, _ = process_sequence(config, worst_sequence, verbose=false)
     return worst_sequence, cost
-end
-
-mutable struct IMTFList
-    elements::Vector{Int}
-    
-    function IMTFList(initial_config::Vector{Int})
-        new(copy(initial_config))
-    end
 end
 
 function imtf_access(imtf_list::IMTFList, element::Int, remaining_sequence::Vector{Int})
